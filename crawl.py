@@ -23,14 +23,18 @@ def axelFile(queue):
         item = queue.get()
         if item is sentinel:
             break
+        
         (url, folder) = item
+        folder = urllib.parse.unquote(folder)
         
         if not os.path.exists(folder):
             try:
                 os.makedirs(folder)
             except Exception as e:
                 pass
+
         filename = urllib.parse.unquote(os.path.basename(url))
+
         if not os.path.exists(os.path.join(folder, filename)):
             subprocess.call(["axel", "-a",  "-n 120",
                          'http://%s'%(url, ),
