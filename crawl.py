@@ -3,6 +3,7 @@ import os
 import subprocess
 from urllib import request
 from urllib.error import HTTPError
+import urllib.parse
 import threading
 import queue
 import logging
@@ -29,10 +30,13 @@ def axelFile(queue):
                 os.makedirs(folder)
             except Exception as e:
                 pass
-        subprocess.call(["axel", "-a",  "-n 120",
-                     'http://%s'%(url, ),
-                     "-o", '%s'%(tmp_folder, )])
-        subprocess.call(["mv", os.path.join(tmp_folder, os.path.basename(url)), folder])
+        filename = urllib.parse.unquote(os.path.basename(url))
+        if not os.path.exists(os.path.join(folder, filename)):
+            subprocess.call(["axel", "-a",  "-n 120",
+                         'http://%s'%(url, ),
+                         "-o", '%s'%(tmp_folder, )])
+            subprocess.call(["mv", os.path.join(tmp_folder, filename), folder])
+
         queue.task_done()
 
 
@@ -115,7 +119,3 @@ if __name__ == "__main__":
         t.join()
 
     logger.info("Done")
-
-    #threads = args[3] if len(args) >= 4 else 4
-    #pool = ThreadPool(threads)
-    #results = pool.map(axelFile, files)
