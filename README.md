@@ -9,6 +9,10 @@ It stores everything in `$target_folder`, in a directory structure similar to th
 URL. If URL is `something.com/Films/2001/Movie.mkv`, It'll be stored at
 `$target_folder/Films/2001/Movie.mkv`.
 
+It also checks in target folder for every file before downloading it. If the
+file is there, it's not downloaded. So you can Ctrl-C any time and continue
+later, without worrying about downloading anything twice.
+
 ### Installation:
 
 - Install axel. Else you'll have to write a replacement for axelFile. 
@@ -18,14 +22,13 @@ Just make sure you follow the same pattern.
 
 **It runs on python3**. Sorry :P
 
+- Run: 
 
-Customize some variables:
+`python3 crawler.py URL /target/folder`
+
+
+### Variables
 
 - `tmp_folder` is a folder preferably on your main hard disk, not on a USB drive. 
 I noticed that downloading is significantly slower if OS has to write to a
 mounted folder.
-
-Actually, I think only one variable needs to be edited. It can be a parameter,
-isn't it?
-
-Also, no, I didn't go to the pain of using an argument parser.
